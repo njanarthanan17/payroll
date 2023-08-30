@@ -29,7 +29,7 @@ exports.addUser = async (req, res) => {
     // Validation checks for required fields
     if (userData.username === "" || !userData.username) {
 
-      res.status(400) .json({error: "username is required" });
+      res.status(400) .json({message: "username is required" });
 
     } else {
 
@@ -40,40 +40,39 @@ exports.addUser = async (req, res) => {
     }
 
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
 
 exports.login = async (req, res) => {
   const { username, userpassword } = req.body;
-    console.log( username, userpassword );
+    // console.log( username, userpassword );
    try {
     const user = await userService.loginuser(username);
-    console.log("UserLoginController", user);
+    // console.log("UserLoginController", user);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
     const isPasswordValid = await bcrypt.compare(userpassword, user.user_password);
 
-       console.log("password match ",isPasswordValid);
+      //  console.log("password match ",isPasswordValid);
 
     if (!isPasswordValid) {
         res.status(401).json({ message: 'Invalid Password' });
         return;
     }
 
-    const responseUser = {
-      username: user.user_name,
-      istemp: user.is_temp,   
-    };
+    // const responseUser = {
+    //   username: user.user_name,
+    //   istemp: user.is_temp,   
+    // };
 
     const token = jwtUtils.generateToken(user);
-    console.log(token);
-    res.json({ token });
+    res.status(200).json({ token : token });
 
-    res.status(201).json({ message: "Login successful",user:responseUser});
+    //res.status(201).json({ message: "Login successful",user:responseUser});
     
 
   } catch (error) {
@@ -104,4 +103,20 @@ exports.updatePassword = async (req, res) => {
   }
 }
 
+
+
+exports.getUser = async (req, res) => {
+  try {
+    const userid = req.params.userid;
+    const user = await userService.getUserById(userid);
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
 

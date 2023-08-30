@@ -17,8 +17,21 @@ exports.addEmployee = async (req, res) => {
      
     } catch (error) {
       //console.log(error);
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(500).json({ message: 'Internal server error' });
     }
   };
 
-
+  exports.getEmployee = async (req, res) => {
+    try {
+      const empid = req.params.empid;
+      const employee = await employeeService.getEmployeeById(empid);
+      if (employee) {
+        res.status(200).json(employee);
+      } else {
+        res.status(404).json({ message: 'Employee not found' });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  }

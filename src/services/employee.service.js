@@ -27,3 +27,7 @@ exports.addEmployeeDetails = async (employeeData) => {
     return error;
   }   
 };
+
+exports.getEmployeeById = async (empId) => {
+  return await Employee.findByPk(empId);
+}

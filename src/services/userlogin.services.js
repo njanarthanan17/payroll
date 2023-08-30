@@ -57,3 +57,7 @@ exports.updateUserPassword = async (userId, hashedPassword) => {
 exports.validatePassword = async (newPassword) => {
   return passwordSchema.validate(newPassword);
 }
+
+exports.getUserById = async (userId) => {
+  return await UserLogin.findByPk(userId);
+}

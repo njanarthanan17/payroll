@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 
 const appConstants = require('./constants');
 
+const authMiddleware = require('./src/middleware/auth')
+
 
 
 
@@ -52,13 +54,15 @@ db.authenticate().then(() => {
 
 console.log('DB Entered');
 
-app.get('/', (req, res) => res.send('Welcome to Hrms API'));
+app.get('/',(req, res) =>{ res.send('Welcome to Hrms API')});
 
  
 
 require('./src/routes/employee.routes')(app);
 
 require('./src/routes/userlogin.routes')(app);
+
+// require('./src/routes/protected.routes')(app);
 
  
 
