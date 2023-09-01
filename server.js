@@ -62,6 +62,8 @@ require('./src/routes/employee.routes')(app);
 
 require('./src/routes/userlogin.routes')(app);
 
+require('./src/routes/projectmaster.routes')(app);
+
 // require('./src/routes/protected.routes')(app);
 
  
